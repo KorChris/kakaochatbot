@@ -1,0 +1,29 @@
+{
+  "name": "kakaochatbot",
+  "version": "1.0.0",
+  "description": "kakaotalk chatbot",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KorChris/kakaochatbot.git"
+  },
+  "keywords": [
+    "chatbot",
+    "kakao"
+  ],
+  "author": "KorChris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KorChris/kakaochatbot/issues"
+  },
+  "homepage": "https://github.com/KorChris/kakaochatbot#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "request": "^2.79.0"
+  }
+}
