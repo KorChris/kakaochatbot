@@ -1,11 +1,17 @@
 # Kakao talk Auto Response basic
-##deploy heroku as kakao talk chat bot
+deploy heroku as kakao talk chat bot
 
-### Server Request Time Error Happens now.
+## Todo
+1. [ ] Server Request Time Error Happens now. Fix it.
+2. [x] Get from Apiai messages.
+3. [ ] Send Message as kakao talk message above.
+4. [ ] Write posting about how to make it.
 
-Author : KorChris
-Github : https://github.com/KorChris
-Email : jon6791@gmail.com
+```javascript
+Const Author = require('KorChris');
+Const Github = require('https://github.com/KorChris');
+var Email = require('jon6791@gmail.com');
+```
 
 **Last Commited on 15, Feb, 2017**
 
