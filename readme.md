@@ -1,7 +1,7 @@
 # Kakao talk Auto Response basic
-deploy heroku as kakao talk chat bot
+##deploy heroku as kakao talk chat bot
 
-**Server Request Time Error Happens.**
+### Server Request Time Error Happens now.
 
 Author : KorChris
 Github : https://github.com/KorChris
