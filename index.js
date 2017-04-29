@@ -3,102 +3,103 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-const apiai = require('apiai');
 const fs = require('fs');
 const app = express();
-
-//apiai App with customer access token
-const apiaiApp= apiai(process.env.apiaiToken);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/', function(req, res) {
+    console.log("HOME");
+});
 
-app.get('/keyboard', function(req, res){
-    fs.readFile("./data/keyboard.json", 'utf8', function (err, data) {
-        console.log( data );
-        res.end( data );
+app.get('/keyboard', function(req, res) {
+    fs.readFile("./data/keyboard.json", 'utf8', function(err, data) {
+        if (err) throw err;
+        console.log(data);
+        res.send(data);
     });
 });
 
-app.post('/message', function(req, res){
+app.post('/message', function(req, res) {
     var sender = req.body.user_key;
     var type = req.body.type;
     var content = req.body.content;
-    var replymessages = [];
 
-    console.log("user : " + sender + " sends message : " + content + " as : " + type);
-    
-    replymessages = processMessage(content);
-    console.log(replymessages);
-    sendKTmessages(replymessages, res, 0);
-});
+    var message = {
+        "message": {
+            "text": "REPLY"
+        },
+        "keyboard": {
+            "type": "buttons",
+            "buttons": [
+                "menu1",
+                "menu2",
+                "menu3"
+            ]
+        }
+    }
 
-function processMessage(text){
-    let replymessages = [];
 
-    let apiai = apiaiApp.textRequest(text, {
-    sessionId: 'MY_HOSTETTER' // use any arbitrary id
-  });
-    
-    apiai.on('response', (response) => {
-        let apiaiText = response.result.fulfillment.speech;
-        var apiaiMessages = response.result.fulfillment.messages;
-
-        
-
-        for(let i=0;i<apiaiMessages.length;i++){
-            let amessage=apiaiMessages[i];
-
-            switch(amessage.type){
-
-                case 0 : 
-                    //0 is text message
-                    console.log("ITS TEXT MESSAGE");
-                    console.log("send This : " + amessage.speech);
-                    replymessages.push(TextMessage(amessage.speech)); 
-                    console.log("return of text message function : : " + replymessages[i]);
-                    break;
+    if (content === 'menu1') {
+        fs.readFile("./data/menu1.json", 'utf8', function(err, data) {
+            console.log(data);
+            res.send(data);
+        });
+    } else if (content === 'menu2') {
+        fs.readFile("./data/menu2.json", 'utf8', function(err, data) {
+            console.log(data);
+            res.send(data);
+        });
+    } else {
+        message = {
+            "message": {
+                "text": "echo : " + content
+            },
+            "keyboard": {
+                "type": "buttons",
+                "buttons": [
+                    "menu1",
+                    "menu2",
+                    "menu3"
+                ]
             }
         }
-        
-    });
-
-    //console.log("reply : " + reply);
-    //if apiai gets error
-    apiai.on('error', (error) => {
-        console.log(error);
-    });
-    
-    //apiai end
-    apiai.end();
-
-    return replymessages;
-}
-
-//send text message to KT customer with apiai response
-function TextMessage(text){
-  let replymessage = { };
-
-  replymessage = {
-    "messages":{
-        "text":text
-    }
-  }
-  return replymessage;
-}
-
-//You need to send the callback when the request is finished.
-function sendKTmessages(replymessages, res, j){
-
-    if(j < replymessages.length){
-        res.send(replymessages[i]);
+        res.send(message);
     }
 
-}
+    console.log("user : " + sender + " sends message : " + content + " as : " + type);
 
+});
+
+app.post('/friend', function(req, res) {
+    const user_key = req.body.user_key;
+    console.log(`${user_key}님이 채팅방에 참가했습니다.`);
+
+    res.set({
+        'content-type': 'application/json'
+    }).send(JSON.stringify({ success: true }));
+});
+
+app.delete('/friend/:user_key', function(req, res) {
+    const user_key = req.body.user_key;
+    console.log(`${user_key}님이 채팅방을 차단했습니다.`);
+
+    res.set({
+        'content-type': 'application/json'
+    }).send(JSON.stringify({ success: true }));
+});
+
+app.delete('/chat_room/:user_key', function(req, res) {
+    const user_key = req.body.user_key;
+    console.log(`${user_key}님이 채팅방에서 나갔습니다.`);
+
+    res.set({
+        'content-type': 'application/json'
+    }).send(JSON.stringify({ success: true }));
+});
 
 //express server connectings
 const server = app.listen(process.env.PORT || 5000, () => {
-  console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
+    console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
 });
