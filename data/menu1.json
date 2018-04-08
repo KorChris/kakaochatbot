@@ -1,0 +1,13 @@
+var message = {
+        "message": {
+            "text": "menu1"
+        },
+        "keyboard": {
+            "type": "buttons",
+            "buttons": [
+                "menu1",
+                "menu2",
+                "menu3"
+            ]
+        }
+    }
