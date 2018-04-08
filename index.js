@@ -74,7 +74,7 @@ app.post('/message', function(req, res) {
 
 app.post('/friend', function(req, res) {
     const user_key = req.body.user_key;
-    console.log(`${user_key}님이 채팅방에 참가했습니다.`);
+    console.log(`${user_key} enters chatting room.`);
 
     res.set({
         'content-type': 'application/json'
@@ -83,7 +83,7 @@ app.post('/friend', function(req, res) {
 
 app.delete('/friend/:user_key', function(req, res) {
     const user_key = req.body.user_key;
-    console.log(`${user_key}님이 채팅방을 차단했습니다.`);
+    console.log(`${user_key} blocks chatting room.`);
 
     res.set({
         'content-type': 'application/json'
@@ -92,7 +92,7 @@ app.delete('/friend/:user_key', function(req, res) {
 
 app.delete('/chat_room/:user_key', function(req, res) {
     const user_key = req.body.user_key;
-    console.log(`${user_key}님이 채팅방에서 나갔습니다.`);
+    console.log(`${user_key} exits chatting room`);
 
     res.set({
         'content-type': 'application/json'
